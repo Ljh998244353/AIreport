@@ -1,0 +1,60 @@
+# 训练配置文件
+
+# 模型配置
+model:
+  name: "Qwen/Qwen2.5-0.5B-Instruct"
+  use_4bit: true  # 是否使用4-bit量化（QLoRA）
+  bnb_4bit_compute_dtype: "float16"
+  bnb_4bit_quant_type: "nf4"
+  bnb_4bit_use_double_quant: true
+
+# LoRA配置
+lora:
+  r: 8                    # LoRA秩
+  lora_alpha: 16          # LoRA缩放系数
+  lora_dropout: 0.05      # LoRA dropout
+  target_modules:         # 目标模块
+    - "q_proj"
+    - "k_proj"
+    - "v_proj"
+    - "o_proj"
+    - "gate_proj"
+    - "up_proj"
+    - "down_proj"
+  bias: "none"
+  task_type: "CAUSAL_LM"
+
+# 训练参数
+training:
+  output_dir: "outputs/checkpoints"
+  num_train_epochs: 3
+  per_device_train_batch_size: 4
+  per_device_eval_batch_size: 4
+  gradient_accumulation_steps: 4
+  learning_rate: 2.0e-4
+  lr_scheduler_type: "cosine"
+  warmup_steps: 100
+  logging_steps: 10
+  save_steps: 500
+  eval_steps: 500
+  save_total_limit: 3
+  eval_strategy: "steps"  # 新版本使用 eval_strategy 替代 evaluation_strategy
+  save_strategy: "steps"
+  load_best_model_at_end: true
+  metric_for_best_model: "eval_loss"
+  greater_is_better: false
+  fp16: true
+  gradient_checkpointing: true
+  dataloader_num_workers: 2
+
+# 数据配置
+data:
+  train_file: "data/processed/train.json"
+  val_file: "data/processed/val.json"
+  test_file: "data/processed/test.json"
+  max_length: 512
+
+# 其他配置
+seed: 42
+report_to: "none"  # 不使用wandb等外部工具
+
