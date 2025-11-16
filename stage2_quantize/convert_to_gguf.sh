@@ -10,9 +10,9 @@ OUTPUT_TYPE="f16"  # f16, f32
 # 创建输出目录
 mkdir -p "$OUTPUT_DIR"
 
-# 运行转换脚本
+# 运行转换脚本（注意：脚本名是 convert_hf_to_gguf.py，使用下划线）
 echo "开始转换模型为GGUF格式..."
-python convert-hf-to-gguf.py \
+python convert_hf_to_gguf.py \
     "$HF_MODEL_PATH" \
     --outdir "$OUTPUT_DIR" \
     --outtype "$OUTPUT_TYPE"

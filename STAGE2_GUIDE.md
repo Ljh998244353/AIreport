@@ -97,15 +97,17 @@ pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
 
 ```bash
 # 确保在llama.cpp目录下
-python convert-hf-to-gguf.py \
+python convert_hf_to_gguf.py \
     ../work/outputs/merged_model \
-    --outdir ../work/outputs/gguf \
+    --outfile ../work/outputs/gguf/qwen2.5-0.5b-instruct-f16.gguf \
     --outtype f16
 ```
 
+**注意：** 脚本名称是 `convert_hf_to_gguf.py`（使用下划线，不是横线）
+
 参数说明：
 - `../work/outputs/merged_model`: 合并后的模型路径（相对于llama.cpp目录）
-- `--outdir`: 输出目录
+- `--outfile`: 输出文件路径（完整路径，包括文件名）
 - `--outtype f16`: 输出为FP16格式（后续再量化）
 
 **输出**: `outputs/gguf/qwen2.5-0.5b-instruct-f16.gguf` (约1GB)
@@ -120,6 +122,9 @@ python convert-hf-to-gguf.py \
 
 # Linux/Mac
 ./quantize ../work/outputs/gguf/qwen2.5-0.5b-instruct-f16.gguf ../work/outputs/gguf/qwen2.5-0.5b-instruct-q4_k_m.gguf Q4_K_M
+
+# 或使用完整路径：
+# ./build/bin/llama-quantize ../work/outputs/gguf/qwen2.5-0.5b-instruct-f16.gguf ../work/outputs/gguf/qwen2.5-0.5b-instruct-q4_k_m.gguf Q4_K_M
 ```
 
 量化级别说明：
@@ -153,12 +158,13 @@ python stage2_quantize/test_quantized_model.py \
 
 ## 常见问题
 
-### Q1: convert-hf-to-gguf.py 找不到怎么办？
+### Q1: convert_hf_to_gguf.py 找不到怎么办？
 
 **A**: 
 - 确保在 llama.cpp 根目录下运行
-- 检查脚本名称，可能是 `convert.py` 或 `convert_hf_to_gguf.py`
-- 查看 llama.cpp 最新文档确认正确的脚本名
+- 脚本名称是 `convert_hf_to_gguf.py`（使用下划线）
+- 运行 `bash setup_llama_cpp.sh` 检查脚本位置
+- 如果手动下载，确保下载的是完整仓库
 
 ### Q2: 转换失败，提示模型格式不支持？
 
